@@ -1,0 +1,30 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Theme.BeSteady" parent="Theme.Material3.DayNight">
+        <item name="colorPrimary">@color/blue_primary</item>
+        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="android:windowBackground">@color/background</item>
+    </style>
+</resources><?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:layout_width="match_parent"
+android:layout_height="match_parent">
+
+<fragment
+    android:id="@+id/nav_host_fragment"
+    android:name="androidx.navigation.fragment.NavHostFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:defaultNavHost="true"
+    app:navGraph="@navigation/mobile_navigation" />
+
+<com.google.android.material.bottomnavigation.BottomNavigationView
+    android:id="@+id/bottom_navigation"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    app:menu="@menu/bottom_nav_menu" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

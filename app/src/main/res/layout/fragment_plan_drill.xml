@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Schedule New Drill"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:layout_marginBottom="24dp" />
+
+                <!-- Drill Type Selection -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Drill Type:"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp" />
+
+                <com.google.android.material.radiogroup.MaterialRadioGroup
+                    android:id="@+id/radioGroupDrillType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/radioScheduled"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Scheduled Time"
+                        android:checked="true" />
+
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/radioRandom"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Random Time Today" />
+
+                </com.google.android.material.radiogroup.MaterialRadioGroup>
+
+                <!-- Date and Time Picker (visible for scheduled drills) -->
+                <LinearLayout
+                    android:id="@+id/layoutScheduledTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="16dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Select Time:"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="8dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnSelectDateTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Select Date and Time"
+                        style="@style/Widget.Material3.Button.OutlinedButton" />
+
+                    <TextView
+                        android:id="@+id/tvSelectedDateTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="No time selected"
+                        android:gravity="center"
+                        android:layout_marginTop="8dp" />
+
+                </LinearLayout>
+
+                <!-- Drill Description -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    app:boxCornerRadiusTopStart="8dp"
+                    app:boxCornerRadiusTopEnd="8dp"
+                    app:boxCornerRadiusBottomStart="8dp"
+                    app:boxCornerRadiusBottomEnd="8dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etDrillDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Drill Description (Optional)" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnScheduleDrill"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="SCHEDULE DRILL"
+                    app:backgroundTint="@color/blue_primary" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Scheduled Drills List -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Upcoming Drills"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="16dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvScheduledDrills"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+</ScrollView>

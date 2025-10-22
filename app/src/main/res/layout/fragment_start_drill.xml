@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Emergency Status Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Emergency Status"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/red_emergency"
+                    android:gravity="center"
+                    android:layout_marginBottom="8dp" />
+
+                <TextView
+                    android:id="@+id/tvDrillStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="No active drill"
+                    android:textSize="16sp"
+                    android:gravity="center"
+                    android:layout_marginBottom="16dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnStartDrill"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="START DRILL"
+                    android:textColor="@color/white"
+                    app:backgroundTint="@color/red_emergency"
+                    android:layout_marginBottom="8dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnStopDrill"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="STOP DRILL"
+                    android:textColor="@color/white"
+                    app:backgroundTint="@color/green_safe"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Timer Section -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Emergency Response Timer"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="16dp" />
+
+                <TextView
+                    android:id="@+id/tvTimer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="00:00:00"
+                    android:textSize="32sp"
+                    android:gravity="center"
+                    android:layout_marginBottom="16dp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnEmergencyCall"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Emergency\nCall"
+                        android:textSize="12sp"
+                        android:layout_marginEnd="4dp"
+                        app:backgroundTint="@color/blue_primary" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnPoliceArrival"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Police\nArrival"
+                        android:textSize="12sp"
+                        android:layout_marginEnd="4dp"
+                        app:backgroundTint="@color/blue_primary" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnCompleteEvacuation"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Complete\nEvacuation"
+                        android:textSize="12sp"
+                        app:backgroundTint="@color/blue_primary" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- User Responses -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="User Safety Status"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="16dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Safe:"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvSafeCount"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="0" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Not Responded:"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvNotRespondedCount"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="0" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+</ScrollView>
