@@ -15,26 +15,40 @@
         android:padding="16dp">
 
         <TextView
-            android:id="@+id/tvDrillType"
+            android:id="@+id/tvDrillDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Type: Scheduled"
+            android:text="November 15, 2024"
             android:textSize="16sp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/tvDrillTime"
+            android:id="@+id/tvDrillDuration"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Time: Nov 15, 2024 at 10:00 AM"
+            android:text="Duration: 00:02:30"
             android:textSize="14sp"
             android:layout_marginTop="4dp" />
 
         <TextView
-            android:id="@+id/tvDrillDescription"
+            android:id="@+id/tvSafeCount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="No description"
+            android:text="Safe: 15 people"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tvFatalities"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Fatalities: 0"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tvNotes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Notes: Regular monthly drill"
             android:textSize="14sp"
             android:textColor="@android:color/darker_gray"
             android:layout_marginTop="4dp" />

@@ -1,13 +1,10 @@
-package com.example.besteady.ui.plan
+package com.besteady.ui.plan
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.besteady.R
-import com.besteady.ui.plan.ScheduledDrill
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -27,7 +24,6 @@ class ScheduledDrillsAdapter(
         return DrillViewHolder(view)
     }
 
-    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: DrillViewHolder, position: Int) {
         val drill = drills[position]
         val dateFormat = SimpleDateFormat("MMM dd, yyyy 'at' hh:mm a", Locale.getDefault())

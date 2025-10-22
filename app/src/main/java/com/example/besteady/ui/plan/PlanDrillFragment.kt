@@ -1,4 +1,4 @@
-package com.besteady.ui.plan
+package com.example.besteady.ui.plan
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -10,7 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.besteady.databinding.FragmentPlanDrillBinding
-import com.example.besteady.ui.plan.ScheduledDrillsAdapter
+import com.besteady.ui.plan.ScheduledDrillsAdapter
 import java.util.Calendar
 import java.util.Date
 
@@ -154,10 +154,3 @@ class PlanDrillFragment : Fragment() {
         _binding = null
     }
 }
-
-data class ScheduledDrill(
-    val id: Long,
-    val type: String,
-    val scheduledTime: Date,
-    val description: String
-)
