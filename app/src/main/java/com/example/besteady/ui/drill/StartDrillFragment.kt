@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.besteady.databinding.FragmentStartDrillBinding
-
+import com.besteady.R
 class StartDrillFragment : Fragment() {
 
     private var _binding: FragmentStartDrillBinding? = null
@@ -76,7 +76,7 @@ class StartDrillFragment : Fragment() {
 
     private fun stopDrill() {
         // Navigate to stop drill dialog/form
-        findNavController().navigate(R.id.stopDrillDialog)
+        findNavController().navigate(resId = R.id.stopDrillDialog)
     }
 
     private fun startTimer() {

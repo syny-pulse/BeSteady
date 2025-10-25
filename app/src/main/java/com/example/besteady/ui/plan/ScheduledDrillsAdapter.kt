@@ -1,4 +1,4 @@
-package com.besteady.ui.plan
+package com.example.besteady.ui.plan
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import java.text.SimpleDateFormat
 import java.util.Locale
+import com.besteady.R
 
 class ScheduledDrillsAdapter(
     private val drills: List<ScheduledDrill>

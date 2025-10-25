@@ -6,11 +6,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.besteady.databinding.FragmentPlanDrillBinding
-import com.besteady.ui.plan.ScheduledDrillsAdapter
+import com.besteady.R
 import java.util.Calendar
 import java.util.Date
 
@@ -50,16 +51,14 @@ class PlanDrillFragment : Fragment() {
     }
 
     private fun setupClickListeners() {
-        binding.radioGroupDrillType.setOnCheckedChangeListener { _, checkedId ->
-            when (checkedId) {
-                R.id.radioScheduled -> {
-                    binding.layoutScheduledTime.visibility = View.VISIBLE
-                }
-                R.id.radioRandom -> {
-                    binding.layoutScheduledTime.visibility = View.GONE
+        // Use standard RadioGroup listener
+        val onCheckedChangeListener =
+            binding.radioGroupDrillType.setOnCheckedChangeListener { _: RadioGroup, checkedId: Int ->
+                when (checkedId) {
+                    R.id.radioScheduled -> binding.layoutScheduledTime.visibility = View.VISIBLE
+                    R.id.radioRandom -> binding.layoutScheduledTime.visibility = View.GONE
                 }
             }
-        }
 
         binding.btnSelectDateTime.setOnClickListener {
             showDateTimePicker()
@@ -73,7 +72,6 @@ class PlanDrillFragment : Fragment() {
     private fun showDateTimePicker() {
         val currentDate = Calendar.getInstance()
 
-        // Date Picker
         DatePickerDialog(
             requireContext(),
             { _, year, month, dayOfMonth ->
@@ -81,7 +79,6 @@ class PlanDrillFragment : Fragment() {
                 selectedDateTime.set(Calendar.MONTH, month)
                 selectedDateTime.set(Calendar.DAY_OF_MONTH, dayOfMonth)
 
-                // Time Picker
                 TimePickerDialog(
                     requireContext(),
                     { _, hourOfDay, minute ->
@@ -118,12 +115,10 @@ class PlanDrillFragment : Fragment() {
                 description = description
             )
         } else {
-            // For random drills, we'll pick a random time today
-            val randomTime = getRandomTimeToday()
             ScheduledDrill(
                 id = System.currentTimeMillis(),
                 type = "Random",
-                scheduledTime = randomTime,
+                scheduledTime = getRandomTimeToday(),
                 description = description
             )
         }
@@ -139,7 +134,7 @@ class PlanDrillFragment : Fragment() {
 
     private fun getRandomTimeToday(): Date {
         val calendar = Calendar.getInstance()
-        val randomHour = (8..17).random() // Random hour between 8 AM and 5 PM
+        val randomHour = (8..17).random()
         val randomMinute = (0..59).random()
 
         calendar.set(Calendar.HOUR_OF_DAY, randomHour)

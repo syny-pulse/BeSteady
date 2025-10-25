@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.besteady.databinding.DialogStopDrillBinding
-
+import com.besteady.R
 class StopDrillDialog : DialogFragment() {
 
     private var _binding: DialogStopDrillBinding? = null
