@@ -208,7 +208,9 @@ class BluetoothDeviceScanDialog(
                     
                     BluetoothAdapter.ACTION_DISCOVERY_FINISHED -> {
                         handler.post {
-                            onScanComplete(context ?: return)
+                            context?.let {
+                                onScanComplete(it)
+                            }
                         }
                     }
                 }
