@@ -2,18 +2,29 @@ package com.besteady.ui.drill
 
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.besteady.databinding.FragmentStartDrillBinding
 import com.besteady.R
+import com.besteady.bluetooth.BluetoothClassicViewModel
+import com.besteady.bluetooth.FireEventType
+import kotlinx.coroutines.launch
+
 class StartDrillFragment : Fragment() {
 
+    private val TAG = "StartDrillFragment"
+    
     private var _binding: FragmentStartDrillBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var bluetoothViewModel: BluetoothClassicViewModel
+    
     private var drillTimer: CountDownTimer? = null
     private var drillStartTime: Long = 0L
     private var emergencyCallTime: Long = 0L
@@ -34,8 +45,56 @@ class StartDrillFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Get Bluetooth ViewModel
+        bluetoothViewModel = ViewModelProvider(requireActivity())[BluetoothClassicViewModel::class.java]
+        
         setupClickListeners()
+        observeFireEvents()
         updateUI()
+    }
+    
+    /**
+     * Observe fire events from Bluetooth ESP32
+     */
+    private fun observeFireEvents() {
+        lifecycleScope.launch {
+            bluetoothViewModel.latestFireEvent.collect { fireEvent ->
+                fireEvent?.let { event ->
+                    when (event.type) {
+                        FireEventType.FIRE_DETECTED -> {
+                            if (!isDrillActive) {
+                                Log.d(TAG, "🔥 Fire detected! Auto-starting drill...")
+                                startDrill()
+                                // Show visual notification
+                                showFireAlert()
+                            }
+                        }
+                        FireEventType.FIRE_CLEARED -> {
+                            Log.d(TAG, "✅ Fire cleared!")
+                            if (isDrillActive) {
+                                // Optional: stop the drill automatically when fire is cleared
+                                // For now, we let the user stop manually
+                            }
+                        }
+                        FireEventType.PING -> {
+                            Log.d(TAG, "📡 ESP32 connection healthy")
+                        }
+                        FireEventType.UNKNOWN -> {
+                            Log.d(TAG, "Unknown message: ${event.message}")
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    /**
+     * Show visual alert when fire is detected
+     */
+    private fun showFireAlert() {
+        // Update status text to show fire alert
+        binding.tvDrillStatus.text = "🔥 FIRE DETECTED - DRILL AUTO-STARTED"
+        binding.tvDrillStatus.setTextColor(resources.getColor(android.R.color.holo_red_dark, null))
     }
 
     private fun setupClickListeners() {
@@ -61,17 +120,26 @@ class StartDrillFragment : Fragment() {
     }
 
     private fun startDrill() {
+        if (isDrillActive) {
+            Log.d(TAG, "Drill already active, skipping start")
+            return
+        }
+        
         isDrillActive = true
         drillStartTime = System.currentTimeMillis()
 
-        // In real app, this would send command to ESP32 to turn off buzzer
-        // and send "Are you safe?" queries to normal users
+        // Send command to ESP32 to turn off buzzer (optional)
+        if (bluetoothViewModel.isConnected()) {
+            bluetoothViewModel.sendMessage("STOP_ALARM\n")
+        }
 
         startTimer()
         updateUI()
 
         // Simulate user responses (in real app, this would come from backend)
         simulateUserResponses()
+        
+        Log.d(TAG, "Drill started at ${System.currentTimeMillis()}")
     }
 
     private fun stopDrill() {
@@ -171,5 +239,15 @@ class StartDrillFragment : Fragment() {
         policeArrivalTime = 0L
         evacuationTime = 0L
         updateUI()
+    }
+    
+    /**
+     * Public method to stop drill manually (called by StopDrillDialog)
+     */
+    fun stopDrillManually() {
+        isDrillActive = false
+        drillTimer?.cancel()
+        updateUI()
+        Log.d(TAG, "Drill stopped manually")
     }
 }

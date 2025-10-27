@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.compose") version "2.0.0"
+    id("org.jetbrains.kotlin.kapt")
 }
 
 android {
@@ -58,6 +59,7 @@ dependencies {
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.12.0")
+    implementation("androidx.cardview:cardview:1.0.0")
 
     // ✅ Jetpack Compose BOM (manages versions automatically)
     val composeBom = platform("androidx.compose:compose-bom:2024.06.00")
@@ -83,4 +85,14 @@ dependencies {
     // ✅ Lifecycle (for ViewModels)
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.4")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.4")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.4")
+    
+    // ✅ Room Database
+    val roomVersion = "2.6.1"
+    implementation("androidx.room:room-runtime:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion")
+    kapt("androidx.room:room-compiler:$roomVersion")
+    
+    // ✅ Coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 }
