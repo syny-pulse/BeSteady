@@ -1,7 +1,8 @@
 package com.example.besteady.ui.plan
 
-import android.app.DatePickerDialog
-import android.app.TimePickerDialog
+import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -70,31 +71,33 @@ class PlanDrillFragment : Fragment() {
     }
 
     private fun showDateTimePicker() {
-        val currentDate = Calendar.getInstance()
+        val datePicker = MaterialDatePicker.Builder.datePicker()
+            .setTitleText("Select date")
+            .build()
 
-        DatePickerDialog(
-            requireContext(),
-            { _, year, month, dayOfMonth ->
-                selectedDateTime.set(Calendar.YEAR, year)
-                selectedDateTime.set(Calendar.MONTH, month)
-                selectedDateTime.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+        datePicker.addOnPositiveButtonClickListener { utcMillis ->
+            val cal = Calendar.getInstance()
+            cal.timeInMillis = utcMillis
+            selectedDateTime.set(Calendar.YEAR, cal.get(Calendar.YEAR))
+            selectedDateTime.set(Calendar.MONTH, cal.get(Calendar.MONTH))
+            selectedDateTime.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH))
 
-                TimePickerDialog(
-                    requireContext(),
-                    { _, hourOfDay, minute ->
-                        selectedDateTime.set(Calendar.HOUR_OF_DAY, hourOfDay)
-                        selectedDateTime.set(Calendar.MINUTE, minute)
-                        updateDateTimeDisplay()
-                    },
-                    currentDate.get(Calendar.HOUR_OF_DAY),
-                    currentDate.get(Calendar.MINUTE),
-                    false
-                ).show()
-            },
-            currentDate.get(Calendar.YEAR),
-            currentDate.get(Calendar.MONTH),
-            currentDate.get(Calendar.DAY_OF_MONTH)
-        ).show()
+            val timePicker = MaterialTimePicker.Builder()
+                .setTimeFormat(TimeFormat.CLOCK_12H)
+                .setHour(selectedDateTime.get(Calendar.HOUR_OF_DAY))
+                .setMinute(selectedDateTime.get(Calendar.MINUTE))
+                .setTitleText("Select time")
+                .build()
+
+            timePicker.addOnPositiveButtonClickListener {
+                selectedDateTime.set(Calendar.HOUR_OF_DAY, timePicker.hour)
+                selectedDateTime.set(Calendar.MINUTE, timePicker.minute)
+                updateDateTimeDisplay()
+            }
+            timePicker.show(parentFragmentManager, "time_picker")
+        }
+
+        datePicker.show(parentFragmentManager, "date_picker")
     }
 
     private fun updateDateTimeDisplay() {

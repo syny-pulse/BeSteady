@@ -16,6 +16,9 @@ import com.besteady.bluetooth.BluetoothClassicViewModel
 import com.besteady.bluetooth.FireEventType
 import com.besteady.ui.drill.StopDrillDialog
 import kotlinx.coroutines.launch
+import com.besteady.ui.widgets.FireRiskGauge
+import android.animation.ValueAnimator
+import android.view.animation.LinearInterpolator
 
 class StartDrillFragment : Fragment() {
 
@@ -34,6 +37,11 @@ class StartDrillFragment : Fragment() {
 
     private var isDrillActive = false
 
+    // Gauge state
+    private var gauge: FireRiskGauge? = null
+    private var currentGaugeAngle: Float = 0f
+    private val minDangerAngleWhileActive: Float = 1f // never fully return to 0 until stop
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -49,9 +57,15 @@ class StartDrillFragment : Fragment() {
         // Get Bluetooth ViewModel
         bluetoothViewModel = ViewModelProvider(requireActivity())[BluetoothClassicViewModel::class.java]
         
+        // Gauge reference
+        gauge = binding.root.findViewById(R.id.fireRiskGauge)
+
         setupClickListeners()
         observeFireEvents()
         updateUI()
+
+        // Initial state
+        updateGauge(0f, updateStatus = true, animate = false)
     }
     
     /**
@@ -137,6 +151,11 @@ class StartDrillFragment : Fragment() {
         startTimer()
         updateUI()
 
+        // Animate gauge from 0 -> 180 over 25s
+        binding.tvFireRiskStatus.text = "Status: Fire Detected – Danger Rising"
+        gauge?.startFireProgress(25_000L)
+        currentGaugeAngle = 180f
+
         // Simulate user responses (in real app, this would come from backend)
         simulateUserResponses()
         
@@ -187,18 +206,27 @@ class StartDrillFragment : Fragment() {
         emergencyCallTime = System.currentTimeMillis() - drillStartTime
         binding.btnEmergencyCall.isEnabled = false
         binding.btnEmergencyCall.text = "Called\n${formatTime(emergencyCallTime)}"
+
+        // Move needle back 30° toward safe, but not below minimum while active
+        nudgeGaugeTowardSafe(30f, "Status: Responders Notified")
     }
 
     private fun recordPoliceArrival() {
         policeArrivalTime = System.currentTimeMillis() - drillStartTime
         binding.btnPoliceArrival.isEnabled = false
         binding.btnPoliceArrival.text = "Arrived\n${formatTime(policeArrivalTime)}"
+
+        // Move needle back 45° toward safe
+        nudgeGaugeTowardSafe(45f, "Status: Responders On Scene")
     }
 
     private fun recordCompleteEvacuation() {
         evacuationTime = System.currentTimeMillis() - drillStartTime
         binding.btnCompleteEvacuation.isEnabled = false
         binding.btnCompleteEvacuation.text = "Evacuated\n${formatTime(evacuationTime)}"
+
+        // Move needle back 60° toward safe
+        nudgeGaugeTowardSafe(60f, "Status: Evacuation Underway")
     }
 
     private fun formatTime(milliseconds: Long): String {
@@ -231,6 +259,38 @@ class StartDrillFragment : Fragment() {
             binding.btnEmergencyCall.text = "Emergency\nCall"
             binding.btnPoliceArrival.text = "Police\nArrival"
             binding.btnCompleteEvacuation.text = "Complete\nEvacuation"
+
+            // Reset gauge and label
+            updateGauge(0f, updateStatus = true, animate = true)
+            binding.tvFireRiskStatus.text = "Status: Safe – Drill Completed"
+        }
+    }
+
+    private fun nudgeGaugeTowardSafe(deltaDegrees: Float, statusText: String) {
+        if (!isDrillActive) return
+        val target = (currentGaugeAngle - deltaDegrees).coerceAtLeast(minDangerAngleWhileActive)
+        updateGauge(target, updateStatus = true, animate = true)
+        binding.tvFireRiskStatus.text = statusText
+    }
+
+    private fun updateGauge(targetAngle: Float, updateStatus: Boolean, animate: Boolean) {
+        currentGaugeAngle = targetAngle.coerceIn(0f, 180f)
+        val g = gauge ?: return
+        if (animate) {
+            g.animateToAngle(currentGaugeAngle, 600L)
+        } else {
+            g.currentRiskAngle = currentGaugeAngle
+        }
+
+        if (updateStatus) {
+            val status = when {
+                currentGaugeAngle < 60f -> "Status: Safe"
+                currentGaugeAngle < 120f -> "Status: Moderate Risk"
+                else -> "Status: Danger"
+            }
+            if (binding.tvFireRiskStatus.text.isNullOrEmpty()) {
+                binding.tvFireRiskStatus.text = status
+            }
         }
     }
 

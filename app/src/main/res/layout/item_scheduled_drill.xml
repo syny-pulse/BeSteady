@@ -4,40 +4,42 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="4dp">
+    android:layout_marginHorizontal="8dp"
+    android:layout_marginVertical="6dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="2dp"
+    app:cardBackgroundColor="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="20dp">
 
         <TextView
             android:id="@+id/tvDrillType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Type: Scheduled"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            style="@style/TextBody"
+            android:textStyle="bold"
+            android:textColor="@color/blue_primary" />
 
         <TextView
             android:id="@+id/tvDrillTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Time: Nov 15, 2024 at 10:00 AM"
-            android:textSize="14sp"
-            android:layout_marginTop="4dp" />
+            style="@style/TextCaption"
+            android:layout_marginTop="8dp" />
 
         <TextView
             android:id="@+id/tvDrillDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="No description"
-            android:textSize="14sp"
-            android:textColor="@android:color/darker_gray"
-            android:layout_marginTop="4dp" />
+            style="@style/TextCaption"
+            android:layout_marginTop="8dp" />
 
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
