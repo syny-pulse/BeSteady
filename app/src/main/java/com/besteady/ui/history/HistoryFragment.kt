@@ -5,16 +5,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.besteady.data.AppDatabase
+import com.besteady.data.DrillRecord
 import com.besteady.databinding.FragmentHistoryBinding
-import java.util.Date
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class HistoryFragment : Fragment() {
 
     private var _binding: FragmentHistoryBinding? = null
     private val binding get() = _binding!!
 
-    private val drillHistory = mutableListOf<DrillHistory>()
     private lateinit var historyAdapter: DrillHistoryAdapter
 
     override fun onCreateView(
@@ -30,47 +33,32 @@ class HistoryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupRecyclerView()
-        loadSampleData()
+        observeDrillHistory()
     }
 
     private fun setupRecyclerView() {
-        historyAdapter = DrillHistoryAdapter(drillHistory)
+        historyAdapter = DrillHistoryAdapter(mutableListOf())
         binding.rvDrillHistory.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = historyAdapter
         }
     }
 
-    private fun loadSampleData() {
-        // Sample data for demonstration
-        drillHistory.addAll(listOf(
-            DrillHistory(
-                id = 1,
-                date = Date(System.currentTimeMillis() - 86400000), // Yesterday
-                duration = "00:02:30",
-                safeCount = 15,
-                fatalities = 0,
-                notes = "Regular monthly drill"
-            ),
-            DrillHistory(
-                id = 2,
-                date = Date(System.currentTimeMillis() - 172800000), // 2 days ago
-                duration = "00:03:15",
-                safeCount = 12,
-                fatalities = 0,
-                notes = "Unexpected drill test"
-            ),
-            DrillHistory(
-                id = 3,
-                date = Date(System.currentTimeMillis() - 259200000), // 3 days ago
-                duration = "00:01:45",
-                safeCount = 18,
-                fatalities = 0,
-                notes = "Quick response drill"
-            )
-        ))
+    private fun observeDrillHistory() {
+        val dao = AppDatabase.getDatabase(requireContext()).drillRecordDao()
 
-        historyAdapter.notifyDataSetChanged()
+        lifecycleScope.launch {
+            dao.getAllDrills().collectLatest { drills ->
+                if (drills.isEmpty()) {
+                    binding.tvEmptyState.visibility = View.VISIBLE
+                    binding.rvDrillHistory.visibility = View.GONE
+                } else {
+                    binding.tvEmptyState.visibility = View.GONE
+                    binding.rvDrillHistory.visibility = View.VISIBLE
+                    historyAdapter.updateData(drills)
+                }
+            }
+        }
     }
 
     override fun onDestroyView() {
@@ -78,12 +66,3 @@ class HistoryFragment : Fragment() {
         _binding = null
     }
 }
-
-data class DrillHistory(
-    val id: Long,
-    val date: Date,
-    val duration: String,
-    val safeCount: Int,
-    val fatalities: Int,
-    val notes: String
-)
