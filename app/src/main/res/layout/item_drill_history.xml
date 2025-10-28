@@ -4,54 +4,69 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="4dp">
+    android:layout_marginHorizontal="8dp"
+    android:layout_marginVertical="6dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="2dp"
+    app:cardBackgroundColor="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="20dp">
 
         <TextView
             android:id="@+id/tvDrillDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="November 15, 2024"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            style="@style/TextBody"
+            android:textStyle="bold"
+            android:textColor="@color/blue_primary" />
 
         <TextView
             android:id="@+id/tvDrillDuration"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Duration: 00:02:30"
-            android:textSize="14sp"
-            android:layout_marginTop="4dp" />
+            style="@style/TextCaption"
+            android:layout_marginTop="8dp" />
 
-        <TextView
-            android:id="@+id/tvSafeCount"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Safe: 15 people"
-            android:textSize="14sp" />
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
 
-        <TextView
-            android:id="@+id/tvFatalities"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Fatalities: 0"
-            android:textSize="14sp" />
+            <TextView
+                android:id="@+id/tvSafeCount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Safe: 15 people"
+                style="@style/TextCaption"
+                android:textColor="@color/green_safe"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvFatalities"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Fatalities: 0"
+                style="@style/TextCaption"
+                android:textColor="@color/text_secondary" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tvNotes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Notes: Regular monthly drill"
-            android:textSize="14sp"
-            android:textColor="@android:color/darker_gray"
-            android:layout_marginTop="4dp" />
+            style="@style/TextCaption"
+            android:layout_marginTop="8dp" />
 
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

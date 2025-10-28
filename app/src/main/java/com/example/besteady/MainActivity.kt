@@ -7,6 +7,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -39,23 +40,22 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // Enable edge-to-edge: draw behind system bars
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val navView = binding.bottomNavigation
         val navController = findNavController(R.id.nav_host_fragment)
 
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.navigation_plan_drill,
-                R.id.navigation_start_drill,
-                R.id.navigation_history
-            )
-        )
-
-        setupActionBarWithNavController(navController, appBarConfiguration)
+        // No action bar - theme is NoActionBar and we skip setupActionBarWithNavController
         navView.setupWithNavController(navController)
         
+        // Loader example usage (hidden by default)
+        val loader = binding.appLoader
+        // loader visibility can be controlled as needed
+
         // Setup Bluetooth FAB
         setupBluetoothButton()
         
