@@ -14,6 +14,7 @@ import com.besteady.databinding.FragmentStartDrillBinding
 import com.besteady.R
 import com.besteady.bluetooth.BluetoothClassicViewModel
 import com.besteady.bluetooth.FireEventType
+import com.besteady.ui.drill.StopDrillDialog
 import kotlinx.coroutines.launch
 
 class StartDrillFragment : Fragment() {
@@ -143,8 +144,21 @@ class StartDrillFragment : Fragment() {
     }
 
     private fun stopDrill() {
-        // Navigate to stop drill dialog/form
-        findNavController().navigate(resId = R.id.stopDrillDialog)
+        val stopTime = System.currentTimeMillis()
+        val duration = stopTime - drillStartTime
+        
+        // Pass data to StopDrillDialog
+        val dialog = StopDrillDialog().apply {
+            drillStartTime = this@StartDrillFragment.drillStartTime
+            drillStopTime = stopTime
+            drillDuration = duration
+            emergencyCallTime = if ((emergencyCallTime ?: 0L) > 0) emergencyCallTime else null
+            policeArrivalTime = if ((policeArrivalTime ?: 0L) > 0) policeArrivalTime else null
+            evacuationTime = if ((evacuationTime ?: 0L) > 0) evacuationTime else null
+            wasAutoStarted = false // Could be set to true if triggered by ESP32
+        }
+        
+        dialog.show(parentFragmentManager, "StopDrillDialog")
     }
 
     private fun startTimer() {
