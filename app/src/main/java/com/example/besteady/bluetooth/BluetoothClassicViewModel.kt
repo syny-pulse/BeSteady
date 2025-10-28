@@ -107,6 +107,25 @@ class BluetoothClassicViewModel(application: Application) : AndroidViewModel(app
     }
 
     /**
+     * Command helpers exposed to UI
+     */
+    fun sendStartDrillCommand() {
+        bluetoothManager.sendStartDrillCommand()
+    }
+
+    fun sendStopDrillCommand() {
+        bluetoothManager.sendStopDrillCommand()
+    }
+
+    fun sendTimeSyncNow() {
+        val now = java.util.Calendar.getInstance()
+        val h = now.get(java.util.Calendar.HOUR_OF_DAY)
+        val m = now.get(java.util.Calendar.MINUTE)
+        val s = now.get(java.util.Calendar.SECOND)
+        bluetoothManager.sendTimeSyncCommand(h, m, s)
+    }
+
+    /**
      * Check if Bluetooth is available
      */
     fun isBluetoothAvailable(): Boolean {
@@ -170,6 +189,19 @@ class BluetoothClassicViewModel(application: Application) : AndroidViewModel(app
             }
             FireEventType.UNKNOWN -> {
                 Log.d(TAG, "❓ Unknown message: ${event.message}")
+                // Check for ACKs and other command responses
+                handleCommandResponse(event.message)
+            }
+        }
+    }
+
+    private fun handleCommandResponse(message: String) {
+        when {
+            message.startsWith("ACK:", ignoreCase = true) -> {
+                Log.d(TAG, "✅ Command acknowledged: $message")
+            }
+            message.contains("PING", ignoreCase = true) -> {
+                Log.d(TAG, "📡 Keep-alive: $message")
             }
         }
     }

@@ -115,10 +115,16 @@ class StartDrillFragment : Fragment() {
     private fun setupClickListeners() {
         binding.btnStartDrill.setOnClickListener {
             startDrill()
+            if (bluetoothViewModel.isConnected()) {
+                bluetoothViewModel.sendStartDrillCommand()
+            }
         }
 
         binding.btnStopDrill.setOnClickListener {
             stopDrill()
+            if (bluetoothViewModel.isConnected()) {
+                bluetoothViewModel.sendStopDrillCommand()
+            }
         }
 
         binding.btnEmergencyCall.setOnClickListener {
@@ -325,3 +331,4 @@ class StartDrillFragment : Fragment() {
         Log.d(TAG, "Drill stopped manually")
     }
 }
+
