@@ -10,7 +10,8 @@ import com.besteady.data.DrillRecord
 import java.text.SimpleDateFormat
 import java.util.*
 
-class DrillHistoryAdapter(private val items: MutableList<DrillRecord>) :
+class DrillHistoryAdapter(private val items: MutableList<DrillRecord>,
+                          private val onItemClick: (DrillRecord) -> Unit ) :
     RecyclerView.Adapter<DrillHistoryAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -34,6 +35,9 @@ class DrillHistoryAdapter(private val items: MutableList<DrillRecord>) :
         holder.tvDrillDuration.text = "Duration: ${formatDuration(item.duration)}"
         holder.tvEvacuationPoints.text = "Evacuation: ${item.evacuationPoints}"
         holder.tvFatalities.text = "Fatalities: ${item.fatalities}"
+        holder.itemView.setOnClickListener {
+            onItemClick(item)
+        }
     }
 
     override fun getItemCount(): Int = items.size

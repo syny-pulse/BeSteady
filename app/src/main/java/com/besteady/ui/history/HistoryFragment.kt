@@ -12,6 +12,7 @@ import com.besteady.data.DrillRecord
 import com.besteady.databinding.FragmentHistoryBinding
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import android.content.Intent
 
 class HistoryFragment : Fragment() {
 
@@ -37,12 +38,19 @@ class HistoryFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        historyAdapter = DrillHistoryAdapter(mutableListOf())
+        historyAdapter = DrillHistoryAdapter(mutableListOf()) { selectedDrill ->
+            // ✅ when an item is clicked, open a detail screen
+            val intent = Intent(requireContext(), DrillDetailActivity::class.java)
+            intent.putExtra("DRILL_ID", selectedDrill.id)
+            startActivity(intent)
+        }
+
         binding.rvDrillHistory.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = historyAdapter
         }
     }
+
 
     private fun observeDrillHistory() {
         val dao = AppDatabase.getDatabase(requireContext()).drillRecordDao()
