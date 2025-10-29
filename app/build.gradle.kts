@@ -60,6 +60,7 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.12.0")
     implementation("androidx.cardview:cardview:1.0.0")
+    implementation("androidx.work:work-runtime-ktx:2.9.1")
 
     // ✅ Jetpack Compose BOM (manages versions automatically)
     val composeBom = platform("androidx.compose:compose-bom:2024.06.00")
