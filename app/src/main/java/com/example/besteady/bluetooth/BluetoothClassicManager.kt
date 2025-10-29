@@ -383,6 +383,25 @@ class BluetoothClassicManager(private val context: Context) {
     }
 
     /**
+     * High-level command helpers for ESP32
+     */
+    fun sendStartDrillCommand() {
+        sendMessage("START_DRILL\n")
+    }
+
+    fun sendStopDrillCommand() {
+        sendMessage("STOP_DRILL\n")
+    }
+
+    fun sendTimeSyncCommand(hour: Int, minute: Int, second: Int) {
+        val safeHour = hour.coerceIn(0, 23)
+        val safeMinute = minute.coerceIn(0, 59)
+        val safeSecond = second.coerceIn(0, 59)
+        val cmd = String.format(Locale.getDefault(), "SETTIME %02d %02d %02d\n", safeHour, safeMinute, safeSecond)
+        sendMessage(cmd)
+    }
+
+    /**
      * Clean up resources
      */
     fun cleanup() {
