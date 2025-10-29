@@ -65,6 +65,30 @@
                 android:layout_marginBottom="8dp" />
 
             <TextView
+                android:id="@+id/btnEmergencyCall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Emergency Call Time:"
+                android:textColor="@android:color/black"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:id="@+id/btnPoliceArrival"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Police Arrival Time:"
+                android:textColor="@android:color/black"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:id="@+id/btnCompleteEvacuation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Complete Evacuation Time:"
+                android:textColor="@android:color/black"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
                 android:id="@+id/tvNotes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
